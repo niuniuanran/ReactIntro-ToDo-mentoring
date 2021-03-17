@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>No react</title>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+    window.onload = function() {
+        const root = document.getElementById("root")
+        const title = "Doing list"
+        const items = ["Sleep", "eat" , "love"]
+
+        // use loop:
+        // const itemComponents = items.map(item => createElement(Item, {content: item}, null))
+        // const listComponent = createElement(List, {title: title}, ...itemComponents)
+        // render(listComponent, root)
+
+        // without loop
+        render(
+            createElement(List, {title: title},
+                createElement(Item, {content: items[0]}),
+                createElement(Item, {content: items[1]}),
+                createElement(Item, {content: items[2]})
+            ),
+            root)
+    }
+
+    function render(component, root) {
+        root.innerHTML = component.render()
+    }
+
+    function createElement(type, props, ...children) {
+        // put children into props, to make the constructors exactly the same as React's
+        const propsWithChildren = {...props, children: children}
+        return new type(propsWithChildren)
+    }
+
+    class Component {
+        constructor(props) {
+            // props = {
+            //  title: ".....",
+            //  content: '....'
+            // }
+            this.props = props
+        }
+    }
+
+    // the to do List component
+    class List extends Component {
+        constructor(props) {
+            super(props)
+            this.title = props.title
+        }
+
+        render() {
+            let content = `<h1>${this.title}</h1>`
+            for (let i = 0; i < this.props.children.length; i++) {
+                content += this.props.children[i].render()
+            }
+
+            return content
+        }
+    }
+
+    // the item component
+    class Item extends Component {
+        constructor(props) {
+            super(props)
+            this.content = props.content
+        }
+
+        render() {
+            return `<div>${this.content}</div>`
+        }
+    }
+</script>
+</body>
+</html>

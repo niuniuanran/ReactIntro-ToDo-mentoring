@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>With react</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+    window.onload = function() {
+        const root = document.getElementById("root")
+        const title = "Doing list"
+        const items = ["Sleep", "eat" , "love"]
+
+        // const itemComponents = items.map(item => React.createElement(Item, {content: item}, null))
+        // const listComponent = React.createElement(List, {title: title}, ...itemComponents)
+        //
+        // ReactDOM.render(listComponent, root)
+const e = React.createElement
+        ReactDOM.render(
+            e(List, {title: title},
+                e(Item, {content: "Eat"}, null),
+                e(Item, {content: "Pray"}, null),
+                e(Item, {content: "Love"}, null),
+            ),
+            root
+        )
+
+/*        <List title={title}>
+            <Item content={"Eat"}/>
+            <Item content={"..."}/>
+            <Item content={",,,,"}/>
+        </List>*/
+    }
+
+    class List extends React.Component {
+        constructor(props) {
+            super(props)
+            this.title = props.title
+            this.children = props.children
+        }
+
+        render() {
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "h1", null, this.title
+                ),
+                ...this.children
+            )
+        }
+    }
+
+    class Item extends React.Component {
+        constructor(props) {
+            super(props)
+            this.content = props.content
+        }
+
+        render() {
+            return React.createElement(
+                "div", null, this.content
+            )
+        }
+    }
+
+</script>
+</body>
+</html>
